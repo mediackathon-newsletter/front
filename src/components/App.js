@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
 
 import Archives from './Archives';
+import AuthenticatedRoute from './AuthenticatedRoute';
 import Idea from './Idea';
 import Home from './Home';
 import Login from './Login';
@@ -18,9 +19,9 @@ const App = () => {
         <div className="routes">
           <Navigation />
           <Route exact path="/" component={Home} />
-          <Route exact path="/idea" component={Idea} />
-          <Route exact path="/archives" component={Archives} />
-          <Route exact path="/profile" component={Profile} />
+          <AuthenticatedRoute exact path="/idea" component={Idea} />
+          <AuthenticatedRoute exact path="/archives" component={Archives} />
+          <AuthenticatedRoute exact path="/profile" component={Profile} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
         </div>

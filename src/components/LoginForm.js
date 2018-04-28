@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import axios from 'axios';
 
 class LoginForm extends Component {
@@ -11,19 +11,23 @@ class LoginForm extends Component {
 
   state = {
     email: '',
-    password: ''
+    password: '',
+    redirectToReferer: false
   };
 
   handleSubmit(e) {
     e.preventDefault();
-    this.loginUser(this.state).then(({ data }) => {
+    this.loginUser({
+      email: this.state.email,
+      password: this.state.password
+    }).then(({ data }) => {
       if (!data[0]) {
-        this.setState({});
+        this.setState({ email: '', password: '' });
       } else {
         const user = data[0];
         const { history } = this.props;
         localStorage.setItem('user', user);
-        history.push('/');
+        this.setState({ redirectToReferer: true });
       }
     });
   }
@@ -39,6 +43,12 @@ class LoginForm extends Component {
   }
 
   render() {
+    const { from } = this.props.location.state || { from: { pathname: '/' } };
+
+    if (this.state.redirectToReferer) {
+      return <Redirect to={from} />;
+    }
+
     return (
       <div className="login-form">
         <form onSubmit={this.handleSubmit}>
