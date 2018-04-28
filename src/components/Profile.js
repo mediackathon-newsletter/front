@@ -26,9 +26,15 @@ class Profile extends Component {
 
   renderSubscription(subscription) {
     return (
-      <div>
-        {subscription.city.name} / {subscription.district.name}
-      </div>
+      <tr>
+        <td>{subscription.city.name}</td>
+        <td>{subscription.district.name}</td>
+        <td>
+          <button className="button is-small is-rounded">
+            <i class="fas fa-ban" />Desinscription
+          </button>
+        </td>
+      </tr>
     );
   }
 
@@ -43,9 +49,18 @@ class Profile extends Component {
 
     return (
       <div className="subscriptions">
-        {subscriptions.map(subscription =>
-          this.renderSubscription(subscription)
-        )}
+        <table className="table is-fullwidth">
+          <thead>
+            <th>Ville</th>
+            <th>Quartier</th>
+            <th />
+          </thead>
+          <tbody>
+            {subscriptions.map(subscription =>
+              this.renderSubscription(subscription)
+            )}
+          </tbody>
+        </table>
       </div>
     );
   }
@@ -128,12 +143,8 @@ class Profile extends Component {
               </div>
               <div className="column">
                 <h2 className="subtitle is-3">Mes Abonnement</h2>
-                <div className="message is-info">
-                  <div className="message-header">
-                    <p>Votre abonnement actuel</p>
-                    {this.renderSubscriptions()}
-                  </div>
-                </div>
+
+                {this.renderSubscriptions()}
               </div>
             </div>
             <button className="button is-primary" type="submit">

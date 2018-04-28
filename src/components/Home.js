@@ -44,6 +44,21 @@ const Home = () => {
       <section className="hero is-white has-background-light">
         <div className="hero-body">
           <div className="container">
+            <h1 className="title">Budget</h1>
+            <h2 className="subtitle">Donnez donnez donnez vos dons.</h2>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
+              rhoncus ut felis ut vulputate. Duis sodales dignissim libero, a
+              posuere nulla tristique sit amet. Sed aliquet finibus felis id
+              cursus. Cras aliquam mi et libero feugiat sagittis. Vestibulum
+              venenatis ante et magna bibendum aliquet.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section className="hero is-white has-background-light">
+        <div className="hero-body">
+          <div className="container">
             <h1 className="title">La rédaction</h1>
             <h2 className="subtitle">Une équipe de grands malades.</h2>
             <p>

@@ -34,6 +34,7 @@ class Navigation extends Component {
         aria-label="main navigation"
       >
         <div className="navbar-brand">
+          <i className="fas fa-newspaper fa-3x" />
           <Link to="/" className="navbar-item">
             La Gazette
           </Link>
@@ -83,7 +84,7 @@ class Navigation extends Component {
               </Link>
             ) : (
               <Link to="/profile" className="navbar-item">
-                Preferences
+                <i class="fas fa-sliders-h link" /> Preferences
               </Link>
             )}
             {!this.state.user ? (
@@ -92,6 +93,7 @@ class Navigation extends Component {
               </Link>
             ) : (
               <a className="navbar-item" onClick={this.userLogout}>
+                <i class="fas fa-sign-out-alt link" />
                 Deconnexion
               </a>
             )}

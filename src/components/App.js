@@ -9,6 +9,7 @@ import Idea from './Idea';
 import Home from './Home';
 import Login from './Login';
 import Navigation from './Navigation';
+import Newsletter from './Newsletter';
 import Signup from './Signup';
 import Profile from './Profile';
 
@@ -22,6 +23,11 @@ const App = () => {
           <AuthenticatedRoute exact path="/idea" component={Idea} />
           <AuthenticatedRoute exact path="/archives" component={Archives} />
           <AuthenticatedRoute exact path="/profile" component={Profile} />
+          <AuthenticatedRoute
+            exact
+            path="/newsletters/:id"
+            component={Newsletter}
+          />
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
         </div>

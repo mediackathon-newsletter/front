@@ -1,36 +1,51 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { fetchSubscriptions } from '../helpers/Api';
+import { getUser } from '../helpers/Auth';
 
-const Archives = () => {
-  return (
-    <section className="section archives">
-      <div className="box">
-        <h1 className="title is-2">Archives</h1>
+import ArchivesSubscriptionItem from './ArchivesSubscriptionItem';
+import './Archives.css';
 
-        <div className="container">
-          <ul>
-            <li className="container">
-              <a href="#" className="button">
-                <span className="">30 avril 2018 -</span>
-                <span className="">Titre de la newsletter 8</span>
-              </a>
-            </li>
-            <li className="">
-              <label className="">
-                <span className="">23 avril 2018 -</span>
-                <span className="">Titre de la newsletter 7</span>
-              </label>
-            </li>
-            <li className="">
-              <label className="">
-                <span className="">16 avril 2018 -</span>
-                <span className="">Titre de la newsletter 6</span>
-              </label>
-            </li>
-          </ul>
+class Archives extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  state = {};
+
+  componentDidMount() {
+    this.fetchSubscriptions();
+  }
+
+  fetchSubscriptions() {
+    const user = getUser();
+    fetchSubscriptions(user).then(({ data }) => {
+      this.setState({ subscriptions: data });
+    });
+  }
+
+  render() {
+    const { subscriptions } = this.state;
+
+    if (!subscriptions) {
+      return <div>Chargement...</div>;
+    }
+
+    return (
+      <section className="section archives">
+        <div className="box">
+          <h1 className="title is-2">Archives</h1>
+
+          <div className="container">
+            <ul>
+              {subscriptions.map(subscription => (
+                <ArchivesSubscriptionItem subscription={subscription} />
+              ))}
+            </ul>
+          </div>
         </div>
-      </div>
-    </section>
-  );
-};
+      </section>
+    );
+  }
+}
 
 export default Archives;
