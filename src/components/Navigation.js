@@ -7,7 +7,7 @@ import './Navigation.css';
 class Navigation extends Component {
   constructor(props) {
     super(props);
-    this.state = { user: getUser() };
+    this.state = { user: getUser(), showBurger: false };
     this.userLogout = this.userLogout.bind(this);
   }
 
@@ -15,6 +15,10 @@ class Navigation extends Component {
     if (prevProps.match !== this.props.match) {
       this.setState({ user: getUser() });
     }
+  }
+
+  showBurger() {
+    this.setState({ showBurger: !this.state.showBurger });
   }
 
   userLogout() {
@@ -26,15 +30,34 @@ class Navigation extends Component {
   render() {
     return (
       <nav
-        className="navigation navbar is-dark is-fixed-top"
+        className="navigation navbar is-white has-background-light is-fixed-top"
         aria-label="main navigation"
       >
         <div className="navbar-brand">
           <Link to="/" className="navbar-item">
-            Newsletter
+            La Gazette
           </Link>
+          <a
+            role="button"
+            className={
+              this.state.showBurger
+                ? 'navbar-burger is-active'
+                : 'navbar-burger'
+            }
+            aria-label="menu"
+            aria-expanded="false"
+            onClick={this.showBurger.bind(this)}
+          >
+            <span aria-hidden="true" />
+            <span aria-hidden="true" />
+            <span aria-hidden="true" />
+          </a>
         </div>
-        <div className="navbar-menu">
+        <div
+          className={
+            this.state.showBurger ? 'navbar-menu is-active' : 'navbar-menu'
+          }
+        >
           {this.state.user ? (
             <div className="navbar-start">
               <div className="navbar-item has-dropdown is-hoverable">

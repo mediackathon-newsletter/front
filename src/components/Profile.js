@@ -12,22 +12,42 @@ class Profile extends Component {
       .then(({ data }) => this.setState({ profile: data }));
 
     axios
-      .get(`http://localhost:4000/cities`)
-      .then(({ data }) => this.setState({ cities: data }));
+      .get(
+        `http://localhost:4000/subscriptions?userId=${
+          currentUser.id
+        }&_expand=city&_expand=district`
+      )
+      .then(({ data }) => this.setState({ subscriptions: data }));
   }
 
-  renderSubscription() {
-    const { cities } = this.state;
+  handleSubmit(e) {
+    e.preventDefault();
+  }
+
+  renderSubscription(subscription) {
+    return (
+      <div>
+        {subscription.city.name} / {subscription.district.name}
+      </div>
+    );
+  }
+
+  renderSubscriptions() {
+    const { subscriptions } = this.state;
 
     const { profile } = this.state;
 
-    if (!cities) {
+    if (!subscriptions) {
       return <div>Chargement...</div>;
     }
 
-    const city = cities.find(c => c.id === parseInt(profile.cityId));
-
-    return <div>{city.name}</div>;
+    return (
+      <div className="subscriptions">
+        {subscriptions.map(subscription =>
+          this.renderSubscription(subscription)
+        )}
+      </div>
+    );
   }
 
   render() {
@@ -41,53 +61,85 @@ class Profile extends Component {
       <section className="section profile">
         <div className="box">
           <h1 className="title is-2">Preferences</h1>
-          <div className="columns">
-            <div className="column">
-              <h2 className="subtitle is-3">Vos informations</h2>
-              <div className="field">
-                <label className="label">Nom </label>
-                <div className="control">
-                  <input
-                    className="input"
-                    value={profile.firstname}
-                    type="text"
-                  />
+          <form onSubmit={this.handleSubmit.bind(this)}>
+            <div className="columns">
+              <div className="column">
+                <h2 className="subtitle is-3">Mes informations</h2>
+                <div className="field">
+                  <label className="label">Nom </label>
+                  <div className="control">
+                    <input
+                      className="input"
+                      value={profile.firstname}
+                      onChange={e =>
+                        this.setState({
+                          profile: { ...profile, firstname: e.target.value }
+                        })
+                      }
+                      type="text"
+                    />
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">Prénom </label>
+                  <div className="control">
+                    <input
+                      className="input"
+                      value={profile.lastname}
+                      type="text"
+                      onChange={e =>
+                        this.setState({
+                          profile: { ...profile, lastname: e.target.value }
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">Email</label>
+                  <div className="control">
+                    <input
+                      className="input"
+                      type="email"
+                      value={profile.email}
+                      onChange={e =>
+                        this.setState({
+                          profile: { ...profile, email: e.target.value }
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">Age</label>
+                  <div className="control">
+                    <input
+                      className="input"
+                      type="number"
+                      value={profile.age}
+                      onChange={e =>
+                        this.setState({
+                          profile: { ...profile, age: e.target.value }
+                        })
+                      }
+                    />
+                  </div>
                 </div>
               </div>
-              <div className="field">
-                <label className="label">Prénom </label>
-                <div className="control">
-                  <input
-                    className="input"
-                    value={profile.lastname}
-                    type="text"
-                  />
-                </div>
-              </div>
-              <div className="field">
-                <label className="label">Email</label>
-                <div className="control">
-                  <input className="input" type="email" value={profile.email} />
-                </div>
-              </div>
-              <div className="field">
-                <label className="label">Age</label>
-                <div className="control">
-                  <input className="input" type="number" value={profile.age} />
+              <div className="column">
+                <h2 className="subtitle is-3">Mes Abonnement</h2>
+                <div className="message is-info">
+                  <div className="message-header">
+                    <p>Votre abonnement actuel</p>
+                    {this.renderSubscriptions()}
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="column">
-              <h2 className="subtitle is-3">Vos Abonnement</h2>
-              <div className="message is-info">
-                <div className="message-header">
-                  <p>Votre abonnement actuel</p>
-                  {this.renderSubscription()}
-                </div>
-              </div>
-            </div>
-          </div>
-          <button className="button is-primary">Modifier</button>
+            <button className="button is-primary" type="submit">
+              Modifier
+            </button>
+          </form>
         </div>
       </section>
     );

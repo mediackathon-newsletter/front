@@ -1,9 +1,13 @@
 @import '../../node_modules/bulma/sass/utilities/initial-variables';
 @import '../../node_modules/bulma/sass/utilities/functions';
 
-@import url('https://fonts.googleapis.com/css?family=Tajawal');
+@import url('https://fonts.googleapis.com/css?family=Bitter:400,700');
 
-// $family-sans-serif: 'Tajawal', sans-serif;
+$family-serif: 'Bitter', serif;
+$family-sans-serif: $family-serif;
+$subtitle-weight: 400;
+$primary: $grey-dark;
+$info: $grey-light;
 
 @import '../../node_modules/bulma/bulma.sass';
 
