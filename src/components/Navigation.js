@@ -21,10 +21,21 @@ class Navigation extends Component {
         </div>
         <div className="navbar-menu">
           <div className="navbar-start">
-            <a href="#" className="navbar-item">
-              Mes archives
-            </a>
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a href="#" className="navbar-link">
+                Mon contenu
+              </a>
+              <div class="navbar-dropdown">
+                <Link to="/archives" class="navbar-item">
+                  Archives
+                </Link>
+              </div>
+            </div>
+            <Link to="/idea" className="navbar-item">
+              Boite à idées
+            </Link>
           </div>
+
           <div className="navbar-end">
             {!this.state.authenticated ? (
               <Link to="/signup" className="navbar-item">

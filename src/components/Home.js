@@ -10,7 +10,8 @@ const Home = () => {
           <div className="container">
             <h1 className="title">Votre actualité hebdomadaire</h1>
             <h2 className="subtitle">
-              Curabitur vel ultrices magna. Donec eu consequat dui, ac ornare.
+              Tous les mercredis votre information de la semaine, et tous les
+              vendredis 12h les activités de votre Week-End
             </h2>
           </div>
         </div>
