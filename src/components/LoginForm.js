@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter, Redirect } from 'react-router-dom';
+import { storeUser } from '../helpers/Auth';
 import axios from 'axios';
 
 class LoginForm extends Component {
@@ -26,7 +27,7 @@ class LoginForm extends Component {
       } else {
         const user = data[0];
         const { history } = this.props;
-        localStorage.setItem('user', user);
+        storeUser(user);
         this.setState({ redirectToReferer: true });
       }
     });

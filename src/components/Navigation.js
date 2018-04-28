@@ -7,13 +7,9 @@ import './Navigation.css';
 class Navigation extends Component {
   constructor(props) {
     super(props);
-
+    this.state = { user: getUser() };
     this.userLogout = this.userLogout.bind(this);
   }
-
-  state = {
-    user: getUser()
-  };
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.match !== this.props.match) {

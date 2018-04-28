@@ -1,3 +1,10 @@
+import axios from 'axios';
+
+export function storeUser(user) {
+  return localStorage.setItem('user', JSON.stringify(user));
+}
+
 export function getUser() {
-  return localStorage.getItem('user');
+  const user = JSON.parse(localStorage.getItem('user'));
+  return user;
 }
