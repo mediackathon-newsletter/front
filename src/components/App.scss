@@ -1,0 +1,14 @@
+@import '../../node_modules/bulma/sass/utilities/initial-variables';
+@import '../../node_modules/bulma/sass/utilities/functions';
+
+@import url('https://fonts.googleapis.com/css?family=Tajawal');
+
+// $family-sans-serif: 'Tajawal', sans-serif;
+
+@import '../../node_modules/bulma/bulma.sass';
+
+html {
+  background: url('../assets/bg_full.jpg') top right no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
