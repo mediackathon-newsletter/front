@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import axios from 'axios';
 
 class LoginForm extends Component {
   constructor(props) {
@@ -14,7 +16,26 @@ class LoginForm extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log(this.state);
+    this.loginUser(this.state).then(({ data }) => {
+      if (!data[0]) {
+        this.setState({});
+      } else {
+        const user = data[0];
+        const { history } = this.props;
+        localStorage.setItem('user', user);
+        history.push('/');
+      }
+    });
+  }
+
+  loginUser({ email, password }) {
+    return axios.get(
+      `http://localhost:4000/users?email=${email}&password=${password}`,
+      {
+        email,
+        password
+      }
+    );
   }
 
   render() {
@@ -56,4 +77,4 @@ class LoginForm extends Component {
   }
 }
 
-export default LoginForm;
+export default withRouter(LoginForm);

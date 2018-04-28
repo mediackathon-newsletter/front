@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 
 class SignupForm extends Component {
@@ -37,13 +38,20 @@ class SignupForm extends Component {
 
     const { user } = this.state;
 
-    axios.post('http://localhost:4000/users', {
+    const request = axios.post('http://localhost:4000/users', {
       firstname: user.firstname,
       lastname: user.lastname,
       email: user.email,
       password: user.password,
       cityId: this.state.selectedCity,
       districtId: this.state.selectedDisctict
+    });
+
+    request.then(res => {
+      const user = res.data;
+      const { history } = this.props;
+      localStorage.setItem('user', user);
+      history.push('/');
     });
   }
 
@@ -186,4 +194,4 @@ class SignupForm extends Component {
   }
 }
 
-export default SignupForm;
+export default withRouter(SignupForm);

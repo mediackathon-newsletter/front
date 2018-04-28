@@ -1,12 +1,31 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import { getUser } from '../helpers/Auth';
 
 import './Navigation.css';
 
 class Navigation extends Component {
+  constructor(props) {
+    super(props);
+
+    this.userLogout = this.userLogout.bind(this);
+  }
+
   state = {
-    authenticated: true
+    user: getUser()
   };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.match !== this.props.match) {
+      this.setState({ user: getUser() });
+    }
+  }
+
+  userLogout() {
+    localStorage.removeItem('user');
+    const { history } = this.props;
+    history.push('/');
+  }
 
   render() {
     return (
@@ -20,24 +39,26 @@ class Navigation extends Component {
           </Link>
         </div>
         <div className="navbar-menu">
-          <div className="navbar-start">
-            <div class="navbar-item has-dropdown is-hoverable">
-              <a href="#" className="navbar-link">
-                Mon contenu
-              </a>
-              <div class="navbar-dropdown">
-                <Link to="/archives" class="navbar-item">
-                  Archives
-                </Link>
+          {this.state.user ? (
+            <div className="navbar-start">
+              <div className="navbar-item has-dropdown is-hoverable">
+                <a href="#" className="navbar-link">
+                  Mon contenu
+                </a>
+                <div className="navbar-dropdown">
+                  <Link to="/archives" className="navbar-item">
+                    Archives
+                  </Link>
+                </div>
               </div>
+              <Link to="/idea" className="navbar-item">
+                Boite à idées
+              </Link>
             </div>
-            <Link to="/idea" className="navbar-item">
-              Boite à idées
-            </Link>
-          </div>
+          ) : null}
 
           <div className="navbar-end">
-            {!this.state.authenticated ? (
+            {!this.state.user ? (
               <Link to="/signup" className="navbar-item">
                 Inscription
               </Link>
@@ -46,15 +67,12 @@ class Navigation extends Component {
                 Preferences
               </Link>
             )}
-            {!this.state.authenticated ? (
+            {!this.state.user ? (
               <Link to="/login" className="navbar-item">
                 Connexion
               </Link>
             ) : (
-              <a
-                className="navbar-item"
-                onClick={e => this.setState({ authenticated: false })}
-              >
+              <a className="navbar-item" onClick={this.userLogout}>
                 Deconnexion
               </a>
             )}
@@ -65,4 +83,4 @@ class Navigation extends Component {
   }
 }
 
-export default Navigation;
+export default withRouter(Navigation);
