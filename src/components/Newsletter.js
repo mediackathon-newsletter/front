@@ -1,21 +1,28 @@
 import React, { Component } from 'react';
-import { fetchNewsletter } from '../helpers/Api';
+
 import { Link } from 'react-router-dom';
+import Article from './Article';
+import { fetchNewsletter, fetchArticles } from '../helpers/Api';
+
 class Newsletter extends Component {
   state = {};
 
   componentDidMount() {
-    console.log(this.props);
-
     fetchNewsletter(this.props.match.params.id).then(({ data }) =>
       this.setState({ newsletter: data })
     );
+
+    fetchArticles(this.props.match.params.id).then(({ data }) =>
+      this.setState({ articles: data })
+    );
   }
 
-  render() {
-    const { newsletter } = this.state;
+  // DATE METEO NOM PHOTO FOCUS QUARTIER (ARTICLES) BREVES BIO-JOURNALISTE
 
-    if (!newsletter) return <div />;
+  render() {
+    const { newsletter, articles } = this.state;
+
+    if (!newsletter || !articles) return <div />;
 
     return (
       <section className="section newsletter">
@@ -26,6 +33,9 @@ class Newsletter extends Component {
             </Link>
           </span>
           <h1 className="title is-2">Newsletter {newsletter.timestamp}</h1>
+          <div className="articles">
+            {articles.map(article => <Article article={article} />)}
+          </div>
         </div>
       </section>
     );

@@ -69,6 +69,9 @@ class Navigation extends Component {
                   <Link to="/archives" className="navbar-item">
                     Archives
                   </Link>
+                  <Link to="/subscriptions" className="navbar-item">
+                    Abonnements
+                  </Link>
                 </div>
               </div>
               <Link to="/idea" className="navbar-item">
@@ -84,7 +87,7 @@ class Navigation extends Component {
               </Link>
             ) : (
               <Link to="/profile" className="navbar-item">
-                <i class="fas fa-sliders-h link" /> Preferences
+                <i className="fas fa-sliders-h link" /> Preferences
               </Link>
             )}
             {!this.state.user ? (
@@ -93,8 +96,7 @@ class Navigation extends Component {
               </Link>
             ) : (
               <a className="navbar-item" onClick={this.userLogout}>
-                <i class="fas fa-sign-out-alt link" />
-                Deconnexion
+                <i className="fas fa-sign-out-alt link" />
               </a>
             )}
           </div>

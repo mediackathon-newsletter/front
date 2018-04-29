@@ -11,6 +11,7 @@ import Login from './Login';
 import Navigation from './Navigation';
 import Newsletter from './Newsletter';
 import Signup from './Signup';
+import Subscriptions from './Subscriptions';
 import Profile from './Profile';
 
 const App = () => {
@@ -27,6 +28,11 @@ const App = () => {
             exact
             path="/newsletters/:id"
             component={Newsletter}
+          />
+          <AuthenticatedRoute
+            exact
+            path="/subscriptions"
+            component={Subscriptions}
           />
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />

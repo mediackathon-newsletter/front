@@ -1,68 +1,21 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { getUser } from '../helpers/Auth';
+import * as Auth from '../helpers/Auth';
+import * as Api from '../helpers/Api';
 
 class Profile extends Component {
   state = {};
   componentDidMount() {
-    const currentUser = getUser();
+    const currentUser = Auth.getUser();
 
-    axios
-      .get(`http://localhost:4000/users/${currentUser.id}`)
-      .then(({ data }) => this.setState({ profile: data }));
-
-    axios
-      .get(
-        `http://localhost:4000/subscriptions?userId=${
-          currentUser.id
-        }&_expand=city&_expand=district`
-      )
-      .then(({ data }) => this.setState({ subscriptions: data }));
+    Api.fetchUser(currentUser.id).then(({ data }) => {
+      this.setState({ profile: data });
+    });
   }
 
   handleSubmit(e) {
     e.preventDefault();
-  }
-
-  renderSubscription(subscription) {
-    return (
-      <tr>
-        <td>{subscription.city.name}</td>
-        <td>{subscription.district.name}</td>
-        <td>
-          <button className="button is-small is-rounded">
-            <i class="fas fa-ban" />Desinscription
-          </button>
-        </td>
-      </tr>
-    );
-  }
-
-  renderSubscriptions() {
-    const { subscriptions } = this.state;
-
-    const { profile } = this.state;
-
-    if (!subscriptions) {
-      return <div>Chargement...</div>;
-    }
-
-    return (
-      <div className="subscriptions">
-        <table className="table is-fullwidth">
-          <thead>
-            <th>Ville</th>
-            <th>Quartier</th>
-            <th />
-          </thead>
-          <tbody>
-            {subscriptions.map(subscription =>
-              this.renderSubscription(subscription)
-            )}
-          </tbody>
-        </table>
-      </div>
-    );
+    Api.updateUser(this.state.profile);
   }
 
   render() {
@@ -75,11 +28,69 @@ class Profile extends Component {
     return (
       <section className="section profile">
         <div className="box">
-          <h1 className="title is-2">Preferences</h1>
+          <h1 className="title is-2">Mon profil</h1>
           <form onSubmit={this.handleSubmit.bind(this)}>
+            <h2 className="subtitle is-3">Social</h2>
             <div className="columns">
               <div className="column">
-                <h2 className="subtitle is-3">Mes informations</h2>
+                <div className="field">
+                  <label className="label">
+                    <i class="fab fa-facebook" /> Facebook
+                  </label>
+                  <div className="control">
+                    <input
+                      className="input"
+                      value={profile.facebook}
+                      onChange={e =>
+                        this.setState({
+                          profile: { ...profile, facebook: e.target.value }
+                        })
+                      }
+                      type="text"
+                    />
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">
+                    <i class="fab fa-twitter" /> Twitter
+                  </label>
+                  <div className="control">
+                    <input
+                      className="input"
+                      value={profile.twitter}
+                      onChange={e =>
+                        this.setState({
+                          profile: { ...profile, twitter: e.target.value }
+                        })
+                      }
+                      type="text"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="column">
+                <div className="field">
+                  <label className="label">
+                    <i class="fab fa-linkedin" /> LinkedIn
+                  </label>
+                  <div className="control">
+                    <input
+                      className="input"
+                      value={profile.linkedin}
+                      onChange={e =>
+                        this.setState({
+                          profile: { ...profile, linkedin: e.target.value }
+                        })
+                      }
+                      type="text"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <h2 className="subtitle is-3">Mes coordonnées</h2>
+            <div className="columns">
+              <div className="column">
                 <div className="field">
                   <label className="label">Nom </label>
                   <div className="control">
@@ -142,14 +153,63 @@ class Profile extends Component {
                 </div>
               </div>
               <div className="column">
-                <h2 className="subtitle is-3">Mes Abonnement</h2>
-
-                {this.renderSubscriptions()}
+                <div className="field">
+                  <label className="label">Adresse </label>
+                  <div className="control">
+                    <input
+                      className="input"
+                      value={profile.address}
+                      onChange={e =>
+                        this.setState({
+                          profile: { ...profile, address: e.target.value }
+                        })
+                      }
+                      type="text"
+                    />
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">Code postal </label>
+                  <div className="control">
+                    <input
+                      className="input"
+                      value={profile.cp}
+                      type="text"
+                      onChange={e =>
+                        this.setState({
+                          profile: { ...profile, cp: e.target.value }
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">Ville</label>
+                  <div className="control">
+                    <input
+                      className="input"
+                      type="text"
+                      value={profile.city}
+                      onChange={e =>
+                        this.setState({
+                          profile: { ...profile, city: e.target.value }
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="field">
+                  <div className="has-text-right">
+                    <button
+                      className="button is-primary is-large"
+                      type="submit"
+                    >
+                      Sauvegarder
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
-            <button className="button is-primary" type="submit">
-              Modifier
-            </button>
           </form>
         </div>
       </section>
