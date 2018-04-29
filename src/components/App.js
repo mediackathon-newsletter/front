@@ -13,6 +13,7 @@ import Newsletter from './Newsletter';
 import Signup from './Signup';
 import Subscriptions from './Subscriptions';
 import Profile from './Profile';
+import BackOffice from './BackOffice';
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
           <AuthenticatedRoute exact path="/idea" component={Idea} />
           <AuthenticatedRoute exact path="/archives" component={Archives} />
           <AuthenticatedRoute exact path="/profile" component={Profile} />
+          <AuthenticatedRoute exact path="/backoffice" component={BackOffice} />
           <AuthenticatedRoute
             exact
             path="/newsletters/:id"
