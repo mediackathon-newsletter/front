@@ -8,7 +8,7 @@ $family-sans-serif: $family-serif;
 $subtitle-weight: 400;
 $primary: $grey-dark;
 $info: $grey-light;
-
+$success: hsl(6, 78%, 66%);
 @import '../../node_modules/bulma/bulma.sass';
 
 html {

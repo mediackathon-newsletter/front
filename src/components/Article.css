@@ -1,0 +1,10 @@
+.article {
+  background-color: hsl(0, 0%, 96%);
+  padding: 2em;
+  margin-bottom: 2em;
+  border-radius: 1em;
+}
+
+.image {
+  width: 300px;
+}

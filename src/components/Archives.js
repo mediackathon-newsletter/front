@@ -19,7 +19,9 @@ class Archives extends Component {
   fetchSubscriptions() {
     const user = getUser();
     fetchSubscriptions(user).then(({ data }) => {
-      this.setState({ subscriptions: data });
+      this.setState({
+        subscriptions: data.sort((a, b) => a.city.name > b.city.name)
+      });
     });
   }
 
@@ -36,11 +38,19 @@ class Archives extends Component {
           <h1 className="title is-2">Archives</h1>
 
           <div className="container">
-            <ul>
-              {subscriptions.map(subscription => (
-                <ArchivesSubscriptionItem subscription={subscription} />
-              ))}
-            </ul>
+            {subscriptions.length != 0 ? (
+              <ul>
+                {subscriptions.map(subscription => (
+                  <ArchivesSubscriptionItem subscription={subscription} />
+                ))}
+              </ul>
+            ) : (
+              <div className="message is-warning">
+                <div class="message-body">
+                  Aucun abonnement. <i class="far fa-frown" />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>

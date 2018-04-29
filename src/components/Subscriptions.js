@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SubscriptionForm from './SubscriptionForm';
 import { getUser } from '../helpers/Auth';
-import { fetchSubscriptions } from '../helpers/Api';
+import { fetchSubscriptions, deleteSubscription } from '../helpers/Api';
 
 import './Subscription.css';
 
@@ -23,26 +23,43 @@ class Subscriptions extends Component {
     const currentUser = getUser();
 
     fetchSubscriptions(currentUser).then(({ data }) =>
-      this.setState({ subscriptions: data })
+      this.setState({
+        subscriptions: data.sort((a, b) => a.city.name > b.city.name)
+      })
+    );
+  }
+
+  cancelSubscription(subscription) {
+    const currentUser = getUser();
+    console.log(subscription, currentUser);
+    deleteSubscription(subscription.id, currentUser.id).then(() =>
+      this.refresh()
     );
   }
 
   renderSubscription(subscription) {
     return (
-      <tr key={subscription.id}>
-        <td>{subscription.city.name}</td>
-        <td>
-          <button className="button is-small is-rounded">
-            <i className="fas fa-ban" />Desinscription
-          </button>
-        </td>
-      </tr>
+      <div key={subscription.id} className="box">
+        <div className="media">
+          <div className="media-content">
+            <p className="subtitle is-4">{subscription.city.name}</p>
+          </div>
+          <div classname="media-right">
+            <button
+              className="button is-white"
+              onClick={() => this.cancelSubscription(subscription)}
+            >
+              <span className="icon is-medium">
+                <i className="fas fa-trash-alt fa-2x" />
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
     );
   }
 
-  renderSubscriptions() {
-    const { subscriptions } = this.state;
-
+  renderSubscriptions(subscriptions) {
     const { profile } = this.state;
 
     if (!subscriptions) {
@@ -51,17 +68,9 @@ class Subscriptions extends Component {
 
     return (
       <div className="subscriptions">
-        <table className="table is-fullwidth">
-          <thead>
-            <th>Ville</th>
-            <th />
-          </thead>
-          <tbody>
-            {subscriptions.map(subscription =>
-              this.renderSubscription(subscription)
-            )}
-          </tbody>
-        </table>
+        {subscriptions.map(subscription =>
+          this.renderSubscription(subscription)
+        )}
       </div>
     );
   }
@@ -110,8 +119,15 @@ class Subscriptions extends Component {
               />
             </div>
           </div>
-
-          {this.renderSubscriptions()}
+          {subscriptions.length !== 0 ? (
+            this.renderSubscriptions(subscriptions)
+          ) : (
+            <div className="message is-warning">
+              <div class="message-body">
+                Aucun abonnement. <i class="far fa-frown" />
+              </div>
+            </div>
+          )}
         </div>
       </section>
     );

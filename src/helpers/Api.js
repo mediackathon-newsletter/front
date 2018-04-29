@@ -17,6 +17,14 @@ export function createArticle(article) {
   });
 }
 
+export function fetchArticles(newsletter) {
+  return axios.get(
+    `${API_URL}/newsletters/${
+      newsletter.id
+    }/articles?_expand=category&_expand=district`
+  );
+}
+
 export function createSubscription(user, city) {
   return axios.post(`${API_URL}/subscriptions`, {
     userId: user.id,
@@ -24,20 +32,25 @@ export function createSubscription(user, city) {
   });
 }
 
-export function deleteSubscription(id) {
-  return axios.delete(`${API_URL}/subscriptions/${id}`);
+export function deleteSubscription(subscription_id, user_id) {
+  console.log(subscription_id, user_id);
+  return axios.delete(
+    `${API_URL}/subscriptions/${subscription_id}?user=${user_id}`
+  );
 }
 
 export function fetchUser(id) {
   return axios.get(`${API_URL}/users/${id}`);
 }
 
-export function fetchNewsletter(id) {
-  return axios.get(`${API_URL}/newsletters/${id}?_embed=articles`);
+export function fetchWeather(city) {
+  return axios.get(`api.openweathermap.org/data/2.5/weather?q=${city},fr`);
 }
 
-export function fetchArticles(id) {
-  return axios.get(`${API_URL}/newsletter/${id}/articles?_expand=user`);
+export function fetchNewsletter(id) {
+  return axios.get(
+    `${API_URL}/newsletters/${id}?_embed=articles&_expand=user&_expand=city`
+  );
 }
 
 export function fetchCities() {
@@ -46,6 +59,15 @@ export function fetchCities() {
 
 export function fetchNewsletters(city, district) {
   return axios.get(`${API_URL}/newsletters?cityId=${city.id}`);
+}
+
+export function createUser(user) {
+  return axios.post(`${API_URL}/users`, {
+    firstname: user.firstname,
+    lastname: user.lastname,
+    email: user.email,
+    password: user.password
+  });
 }
 
 export function updateUser(user) {

@@ -3,6 +3,8 @@ import axios from 'axios';
 import * as Auth from '../helpers/Auth';
 import * as Api from '../helpers/Api';
 
+import './Profile.css';
+
 class Profile extends Component {
   state = {};
   componentDidMount() {
@@ -30,6 +32,29 @@ class Profile extends Component {
         <div className="box">
           <h1 className="title is-2">Mon profil</h1>
           <form onSubmit={this.handleSubmit.bind(this)}>
+            {profile.journalist ? (
+              <div className="bio">
+                <h2 className="subtitle is-3">Bio</h2>
+                <div className="columns">
+                  <div className="column">
+                    <div className="field">
+                      <div className="control">
+                        <textarea
+                          className="textarea"
+                          value={profile.bio}
+                          placeholder="Votre bio"
+                          onChange={e =>
+                            this.setState({
+                              profile: { ...profile, bio: e.target.value }
+                            })
+                          }
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : null}
             <h2 className="subtitle is-3">Social</h2>
             <div className="columns">
               <div className="column">

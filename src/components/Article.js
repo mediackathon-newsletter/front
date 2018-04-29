@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import './Article.css';
 class Article extends Component {
   render() {
     const { article } = this.props;
@@ -11,21 +11,35 @@ class Article extends Component {
     // TODO : QUARTIER / CATEGORIE
 
     return (
-      <div className="box is-ligth">
+      <div className="article is-rounded">
         <div className="columns">
           <div className="column is-four-fifths">
-            <h4 className="title is-4 ">{article.title}</h4>
+            <h4 className="subtitle is-4 ">
+              {article.title}{' '}
+              <span class="tag is-rounded is-success">
+                {article.category.name}
+              </span>{' '}
+              <span class="tag is-rounded is-info">
+                {article.district.name}
+              </span>
+            </h4>
           </div>
-          <div className="column">
-            <p className="subtitle is-7">
-              <i class="fas fa-user-circle" /> {article.user.firstname}{' '}
-              {article.user.lastname}
-            </p>
-          </div>
+          <div className="column" />
         </div>
 
-        <h6 className="title is-6">{article.subtitle}</h6>
-        <p className="content">{article.text}</p>
+        <h6 className="title is-5">{article.subtitle}</h6>
+
+        <div className="columns">
+          {article.img ? (
+            <div className="column is-3">
+              <img src={article.img} width="400" />
+            </div>
+          ) : null}
+
+          <div className="column">
+            <p>{article.content}</p>
+          </div>
+        </div>
       </div>
     );
   }

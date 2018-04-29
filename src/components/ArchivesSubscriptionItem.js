@@ -31,21 +31,32 @@ class ArchivesSubscriptionItem extends Component {
     newsletters.sort((a, b) => a.timestamp < b.timestamp);
 
     return (
-      <li className="subscription">
-        <span className="title is-5">{subscription.city.name}</span>
-        <span className="is-5">
-          <i class="fas fa-angle-double-right fa-1x separator" />
+      <li className="subscription box">
+        <span className="subtitle is-4">
+          <i class="fas fa-building" /> {subscription.city.name}
         </span>
-        <span className="subtitle is-5 ">{subscription.district.name}</span>
-        <ul>
-          {this.state.newsletters.map(newsletter => (
-            <li>
-              <Link to={`/newsletters/${newsletter.id}`}>
-                Semaine {moment(newsletter.timestamp).format('W')} de{' '}
-                {moment(newsletter.timestamp).format('YYYY')}
-              </Link>
-            </li>
-          ))}
+
+        <ul style={{ 'margin-top': '1.5em' }}>
+          {newsletters.length != 0 ? (
+            <ul>
+              {newsletters.map(newsletter => (
+                <li>
+                  <i class="far fa-calendar-alt" />{' '}
+                  <Link to={`/newsletters/${newsletter.id}`}>
+                    Newsletter #{moment(newsletter.timestamp).format('W')}/{moment(
+                      newsletter.timestamp
+                    ).format('YYYY')}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="message is-warning">
+              <div class="message-body">
+                Aucune newsletter. <i class="far fa-frown" />
+              </div>
+            </div>
+          )}
         </ul>
       </li>
     );

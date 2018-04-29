@@ -15,9 +15,9 @@ class SubscriptionForm extends Component {
 
   handleSubmit() {
     const currentUser = getUser();
-    createSubscription(currentUser, { id: this.state.selectedCity }).then(() =>
-      this.props.toggle()
-    );
+    createSubscription(currentUser, {
+      id: parseInt(this.state.selectedCity)
+    }).then(() => this.props.toggle());
   }
 
   render() {

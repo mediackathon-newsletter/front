@@ -5,7 +5,7 @@ const Signup = () => {
   return (
     <section className="section signup">
       <div className="box">
-        <h1 className="title is-2">Inscription</h1>
+        <h1 className="title is-2">Essai gratuit</h1>
         <SignupForm />
       </div>
     </section>

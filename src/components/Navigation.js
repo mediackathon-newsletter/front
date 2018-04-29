@@ -36,7 +36,7 @@ class Navigation extends Component {
         <div className="navbar-brand">
           <i className="fas fa-newspaper fa-3x" />
           <Link to="/" className="navbar-item">
-            La Gazette
+            CLF
           </Link>
           <a
             role="button"
@@ -82,8 +82,8 @@ class Navigation extends Component {
 
           <div className="navbar-end">
             {!this.state.user ? (
-              <Link to="/signup" className="navbar-item">
-                Inscription
+              <Link to="/signup" className="navbar-item has-text-danger">
+                Essai gratuit
               </Link>
             ) : (
               <Link to="/profile" className="navbar-item">

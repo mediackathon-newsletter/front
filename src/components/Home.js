@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { getUser } from '../helpers/Auth';
 
 import './Home.css';
 
@@ -8,61 +10,48 @@ const Home = () => {
       <section className="hero is-white has-background-light">
         <div className="hero-body">
           <div className="container">
-            <h1 className="title">Votre actualité hebdomadaire</h1>
+            <h1 className="title">CLF, c’est l’info qu’il me faut</h1>
             <h2 className="subtitle">
-              Tous les mercredis pour le gouter votre information de la semaine,
-              et tous les vendredis pour l'apéro les activités de votre Week-End
+              Clermont-Ferrand ce sont des quartiers vivants, animés par des
+              habitants enthousiasmants. CLF les met en lumière chaque semaine.
+              Les mercredis et vendredis vous recevrez directement dans votre
+              boite mail de l’info ultra locale. CLF c’est aussi de l’info
+              pratique sur ce qu’il se passe à côté de chez vous.
             </h2>
           </div>
         </div>
       </section>
-      <section className="hero is-white has-background-light">
-        <div className="hero-body">
-          <div className="container">
-            <h1 className="title">Notre philosophie</h1>
-            <h2 className="subtitle">Donnez donnez donnez vos dons.</h2>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
-              rhoncus ut felis ut vulputate. Duis sodales dignissim libero, a
-              posuere nulla tristique sit amet. Sed aliquet finibus felis id
-              cursus. Cras aliquam mi et libero feugiat sagittis. Vestibulum
-              venenatis ante et magna bibendum aliquet. Phasellus posuere dolor
-              eget viverra feugiat. Nam ligula ex, posuere a leo lobortis,
-              volutpat vulputate felis. Praesent venenatis tortor eget quam
-              vestibulum, eu varius diam euismod. Quisque facilisis, urna ac
-              venenatis elementum, augue lorem interdum ex, pulvinar
-              sollicitudin ipsum enim eget sem. Pellentesque accumsan luctus
-              gravida. Duis ut dolor magna. Pellentesque varius orci a nibh
-              commodo tempor. Nunc eu finibus erat. Orci varius natoque
-              penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-              Class aptent taciti sociosqu ad litora torquent per conubia
-              nostra, per inceptos himenaeos.
-            </p>
+      {!getUser() ? (
+        <section className="hero is-white has-background-light">
+          <div className="hero-body">
+            <div className="container">
+              <h1 className="title">Essai gratuit</h1>
+              <h2 className="subtitle">
+                Testez notre newsletter avec votre premier mois d'abonnement
+                gratuit
+              </h2>
+              <p className="has-text-centered">
+                <Link
+                  to="/signup"
+                  className="button is-primary is-large has-background-danger"
+                >
+                  Inscription
+                </Link>
+              </p>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
+
       <section className="hero is-white has-background-light">
         <div className="hero-body">
           <div className="container">
-            <h1 className="title">Budget</h1>
-            <h2 className="subtitle">Donnez donnez donnez vos dons.</h2>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
-              rhoncus ut felis ut vulputate. Duis sodales dignissim libero, a
-              posuere nulla tristique sit amet. Sed aliquet finibus felis id
-              cursus. Cras aliquam mi et libero feugiat sagittis. Vestibulum
-              venenatis ante et magna bibendum aliquet.
-            </p>
-          </div>
-        </div>
-      </section>
-      <section className="hero is-white has-background-light">
-        <div className="hero-body">
-          <div className="container">
-            <h1 className="title">La rédaction</h1>
-            <h2 className="subtitle">Une équipe de grands malades.</h2>
-            <p>
-              <img src="team.jpg" className="picture is-centered" />
+            <h1 className="title">L'équipe</h1>
+            <h2 className="subtitle">
+              Une équipe de journaliste dans le cloud.
+            </h2>
+            <p className="has-text-centered">
+              <img src="team.jpg" className="picture i" />
             </p>
           </div>
         </div>
