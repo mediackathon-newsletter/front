@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
 
 import Archives from './Archives';
-import AuthenticatedRoute from './AuthenticatedRoute';
 import Idea from './Idea';
 import Home from './Home';
 import Login from './Login';
@@ -15,6 +14,9 @@ import Subscriptions from './Subscriptions';
 import Profile from './Profile';
 import BackOffice from './BackOffice';
 
+// GraphQL
+import requireAuthentication from './requireAuthentication';
+
 const App = () => {
   return (
     <div className="app">
@@ -22,19 +24,26 @@ const App = () => {
         <div className="routes">
           <Navigation />
           <Route exact path="/" component={Home} />
-          <AuthenticatedRoute exact path="/idea" component={Idea} />
-          <AuthenticatedRoute exact path="/archives" component={Archives} />
-          <AuthenticatedRoute exact path="/profile" component={Profile} />
-          <AuthenticatedRoute exact path="/backoffice" component={BackOffice} />
-          <AuthenticatedRoute
+          <Route exact path="/idea" component={requireAuthentication(Idea)} />
+          <Route
+            exact
+            path="/archives"
+            component={requireAuthentication(Archives)}
+          />
+          <Route
+            exact
+            path="/profile"
+            component={requireAuthentication(Profile)}
+          />
+          <Route
             exact
             path="/newsletters/:id"
-            component={Newsletter}
+            component={requireAuthentication(Newsletter)}
           />
-          <AuthenticatedRoute
+          <Route
             exact
             path="/subscriptions"
-            component={Subscriptions}
+            component={requireAuthentication(Subscriptions)}
           />
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />

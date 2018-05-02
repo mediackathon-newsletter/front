@@ -1,91 +1,80 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { withRouter, Redirect } from 'react-router-dom';
-import { storeUser } from '../helpers/Auth';
-import axios from 'axios';
 
-class LoginForm extends Component {
-  constructor(props) {
-    super(props);
+//GraphQL
+import gql from 'graphql-tag';
+import { Mutation } from 'react-apollo';
+import GET_USER from '../queries/getUser';
 
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+const LoginForm = props => {
+  let email, password;
 
-  state = {
-    email: '',
-    password: '',
-    redirectToReferer: false
-  };
+  return (
+    <div className="login-form">
+      <Mutation
+        mutation={LOGIN_USER}
+        refetchQueries={[{ query: GET_USER }]}
+        onCompleted={() => props.history.push('/')}
+      >
+        {(login, { data }) => (
+          <form
+            onSubmit={e => {
+              e.preventDefault();
+              login({
+                variables: {
+                  email: email.value,
+                  password: password.value
+                }
+              });
+            }}
+          >
+            <div className="field">
+              <label className="label">Email</label>
+              <div className="control">
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="Email"
+                  ref={input => {
+                    email = input;
+                  }}
+                />
+              </div>
+            </div>
+            <div className="field">
+              <label className="label">Mot de passe</label>
+              <div className="control">
+                <input
+                  className="input"
+                  type="password"
+                  placeholder="Mot de passe"
+                  ref={input => {
+                    password = input;
+                  }}
+                />
+              </div>
+            </div>
+            <div className="field">
+              <div className="control">
+                <button className="button is-primary" type="submit">
+                  Se connecter
+                </button>
+              </div>
+            </div>
+          </form>
+        )}
+      </Mutation>
+    </div>
+  );
+};
 
-  handleSubmit(e) {
-    e.preventDefault();
-    this.loginUser({
-      email: this.state.email,
-      password: this.state.password
-    }).then(({ data }) => {
-      if (!data[0]) {
-        this.setState({ email: '', password: '' });
-      } else {
-        const user = data[0];
-        const { history } = this.props;
-        storeUser(user);
-        this.setState({ redirectToReferer: true });
-      }
-    });
-  }
-
-  loginUser({ email, password }) {
-    return axios.get(
-      `http://localhost:4000/users?email=${email}&password=${password}`,
-      {
-        email,
-        password
-      }
-    );
-  }
-
-  render() {
-    const { from } = this.props.location.state || { from: { pathname: '/' } };
-
-    if (this.state.redirectToReferer) {
-      return <Redirect to={from} />;
+const LOGIN_USER = gql`
+  mutation login($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      id
+      email
     }
-
-    return (
-      <div className="login-form">
-        <form onSubmit={this.handleSubmit}>
-          <div className="field">
-            <label className="label">Email</label>
-            <div className="control">
-              <input
-                className="input"
-                type="text"
-                placeholder="Email"
-                onChange={e => this.setState({ email: e.target.value })}
-              />
-            </div>
-          </div>
-          <div className="field">
-            <label className="label">Mot de passe</label>
-            <div className="control">
-              <input
-                className="input"
-                type="password"
-                placeholder="Mot de passe"
-                onChange={e => this.setState({ password: e.target.value })}
-              />
-            </div>
-          </div>
-          <div className="field">
-            <div className="control">
-              <button className="button is-primary" type="submit">
-                Se connecter
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-    );
   }
-}
+`;
 
 export default withRouter(LoginForm);
