@@ -12,7 +12,6 @@ import Newsletter from './Newsletter';
 import Signup from './Signup';
 import Subscriptions from './Subscriptions';
 import Profile from './Profile';
-import BackOffice from './BackOffice';
 
 // GraphQL
 import requireAuthentication from './requireAuthentication';

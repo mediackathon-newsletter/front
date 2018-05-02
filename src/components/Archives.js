@@ -1,61 +1,46 @@
-import React, { Component } from 'react';
-import { fetchSubscriptions } from '../helpers/Api';
-import { getUser } from '../helpers/Auth';
-
-import ArchivesSubscriptionItem from './ArchivesSubscriptionItem';
+import React from 'react';
+import { Query } from 'react-apollo';
+import GET_SUBSCRIPTIONS from '../queries/getSubscriptions';
+import ArchivesList from './ArchivesList';
 import './Archives.css';
 
-class Archives extends Component {
-  constructor(props) {
-    super(props);
-  }
+const Archives = props => {
+  return (
+    <section className="section archives">
+      <Query query={GET_SUBSCRIPTIONS} variables={{ user: props.user.id }}>
+        {({ loading, error, data: { subscriptions } }) => {
+          if (loading) {
+            return <div>Chargement...</div>;
+          }
+          if (error) {
+            return <div>Erreur...</div>;
+          }
 
-  state = {};
+          return (
+            <div className="box">
+              <h1 className="title is-2">Archives</h1>
 
-  componentDidMount() {
-    this.fetchSubscriptions();
-  }
-
-  fetchSubscriptions() {
-    const user = getUser();
-    fetchSubscriptions(user).then(({ data }) => {
-      this.setState({
-        subscriptions: data.sort((a, b) => a.city.name > b.city.name)
-      });
-    });
-  }
-
-  render() {
-    const { subscriptions } = this.state;
-
-    if (!subscriptions) {
-      return <div>Chargement...</div>;
-    }
-
-    return (
-      <section className="section archives">
-        <div className="box">
-          <h1 className="title is-2">Archives</h1>
-
-          <div className="container">
-            {subscriptions.length != 0 ? (
-              <ul>
-                {subscriptions.map(subscription => (
-                  <ArchivesSubscriptionItem subscription={subscription} />
-                ))}
-              </ul>
-            ) : (
-              <div className="message is-warning">
-                <div class="message-body">
-                  Aucun abonnement. <i class="far fa-frown" />
-                </div>
+              <div className="container">
+                {subscriptions.length !== 0 ? (
+                  <ul>
+                    {subscriptions.map(({ city }) => (
+                      <ArchivesList city={city} />
+                    ))}
+                  </ul>
+                ) : (
+                  <div className="message is-warning">
+                    <div class="message-body">
+                      Aucun abonnement. <i class="far fa-frown" />
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        </div>
-      </section>
-    );
-  }
-}
+            </div>
+          );
+        }}
+      </Query>
+    </section>
+  );
+};
 
 export default Archives;

@@ -18,6 +18,7 @@ const client = new ApolloClient({
     credentials: 'include'
   },
   cache: new InMemoryCache(),
+  dataIdFromObject: o => o.id,
   uri: 'http://localhost:4000/graphql',
   request: async operation => {
     operation.setContext({
