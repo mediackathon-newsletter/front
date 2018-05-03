@@ -1,140 +1,108 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { createUser, createSubscription } from '../helpers/Api';
-import { storeUser } from '../helpers/Auth';
-import CitiesForm from './CitiesForm';
 
-import axios from 'axios';
+//GraphQL
+import { Mutation } from 'react-apollo';
+import SIGNUP_USER from '../mutations/signup';
 
-class SignupForm extends Component {
-  constructor(props) {
-    super(props);
-  }
+const SignupForm = props => {
+  let firstname, lastname, email, password;
 
-  state = {
-    user: {
-      firstname: '',
-      lastname: '',
-      email: '',
-      password: ''
-    },
-    subscriptionCityId: null
-  };
-
-  handleCityChange(city) {
-    this.setState({ subscriptionCityId: city });
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-
-    const { user } = this.state;
-
-    createUser({
-      firstname: user.firstname,
-      lastname: user.lastname,
-      email: user.email,
-      password: user.password
-    }).then(({ data }) => {
-      storeUser(data);
-      createSubscription(
-        { id: data.id },
-        { id: this.state.subscriptionCityId }
-      ).then(({ data }) => {
-        const { history } = this.props;
-        history.push('/');
-      });
-    });
-  }
-
-  render() {
-    return (
-      <div className="signup-form">
-        <form onSubmit={this.handleSubmit.bind(this)}>
-          <section className="section">
-            <h1 className="title is-4">Vous</h1>
-            <div className="field">
-              <label className="label">Prénom</label>
-              <div className="control">
-                <input
-                  className="input"
-                  type="text"
-                  placeholder="Prénom"
-                  onChange={e =>
-                    this.setState({
-                      user: { ...this.state.user, lastname: e.target.value }
-                    })
-                  }
-                />
+  return (
+    <div className="signup-form">
+      <Mutation
+        mutation={SIGNUP_USER}
+        onCompleted={() => props.history.push('/')}
+      >
+        {(signup, { loading, error, data }) => (
+          <form
+            onSubmit={e => {
+              e.preventDefault();
+              signup({
+                variables: {
+                  firstname: firstname.value,
+                  lastname: lastname.value,
+                  email: email.value,
+                  password: password.value
+                }
+              });
+            }}
+          >
+            <section className="section">
+              <h1 className="title is-4">Vous</h1>
+              <div className="field">
+                <label className="label">Prénom</label>
+                <div className="control">
+                  <input
+                    className="input"
+                    type="text"
+                    placeholder="Prénom"
+                    ref={input => {
+                      lastname = input;
+                    }}
+                  />
+                </div>
               </div>
-            </div>
-            <div className="field">
-              <label className="label">Nom</label>
-              <div className="control">
-                <input
-                  className="input"
-                  type="text"
-                  placeholder="Nom"
-                  onChange={e =>
-                    this.setState({
-                      user: { ...this.state.user, firstname: e.target.value }
-                    })
-                  }
-                />
+              <div className="field">
+                <label className="label">Nom</label>
+                <div className="control">
+                  <input
+                    className="input"
+                    type="text"
+                    placeholder="Nom"
+                    ref={input => {
+                      firstname = input;
+                    }}
+                  />
+                </div>
               </div>
-            </div>
-            <div className="field">
-              <label className="label">Email</label>
-              <div className="control">
-                <input
-                  className="input"
-                  type="text"
-                  placeholder="Email"
-                  onChange={e =>
-                    this.setState({
-                      user: { ...this.state.user, email: e.target.value }
-                    })
-                  }
-                />
+              <div className="field">
+                <label className="label">Email</label>
+                <div className="control">
+                  <input
+                    className="input"
+                    type="text"
+                    placeholder="Email"
+                    ref={input => {
+                      email = input;
+                    }}
+                  />
+                </div>
               </div>
-            </div>
-            <div className="field">
-              <label className="label">Mot de passe</label>
-              <div className="control">
-                <input
-                  className="input"
-                  type="password"
-                  placeholder="Mot de passe"
-                  onChange={e =>
-                    this.setState({
-                      user: { ...this.state.user, password: e.target.value }
-                    })
-                  }
-                />
+              <div className="field">
+                <label className="label">Mot de passe</label>
+                <div className="control">
+                  <input
+                    className="input"
+                    type="password"
+                    placeholder="Mot de passe"
+                    ref={input => {
+                      password = input;
+                    }}
+                  />
+                </div>
               </div>
-            </div>
-          </section>
-          <section className="section">
-            <h1 className="title is-4">Votre ville</h1>
-            <div className="field">
-              <div className="control">
-                <CitiesForm cityChange={this.handleCityChange.bind(this)} />
+            </section>
+            <section className="section">
+              <h1 className="title is-4">Votre ville</h1>
+              <div className="field">
+                <div className="control" />
               </div>
-            </div>
-          </section>
-          <section>
-            <div className="field">
-              <div className="control has-text-centered">
-                <button className="button is-primary is-large" type="submit">
-                  S'inscrire
-                </button>
+            </section>
+            <section>
+              <div className="field">
+                <div className="control has-text-centered">
+                  <button className="button is-primary is-large" type="submit">
+                    S'inscrire
+                  </button>
+                </div>
               </div>
-            </div>
-          </section>
-        </form>
-      </div>
-    );
-  }
-}
+            </section>
+          </form>
+        )}
+      </Mutation>
+    </div>
+  );
+};
 
 export default withRouter(SignupForm);

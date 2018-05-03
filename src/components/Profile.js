@@ -1,38 +1,39 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import * as Auth from '../helpers/Auth';
-import * as Api from '../helpers/Api';
+import { Query, Mutation, graphql, compose } from 'react-apollo';
+
+import GET_PROFILE from '../queries/getProfile';
+import UPDATE_PROFILE from '../mutations/updateProfile';
 
 import './Profile.css';
 
 class Profile extends Component {
   state = {};
-  componentDidMount() {
-    const currentUser = Auth.getUser();
-
-    Api.fetchUser(currentUser.id).then(({ data }) => {
-      this.setState({ profile: data });
-    });
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-    Api.updateUser(this.state.profile);
-  }
 
   render() {
-    const { profile } = this.state;
+    const { data: { loading, error, profile }, mutate } = this.props;
 
-    if (!profile) {
-      return <div>Chargement</div>;
+    if (loading) {
+      return <div>Chargement...</div>;
+    }
+    if (error) {
+      return <div>Error...</div>;
     }
 
     return (
       <section className="section profile">
         <div className="box">
           <h1 className="title is-2">Mon profil</h1>
-          <form onSubmit={this.handleSubmit.bind(this)}>
-            {profile.journalist ? (
+          <form
+            onSubmit={e => {
+              e.preventDefault();
+              mutate({
+                variables: {
+                  user: this.state
+                }
+              });
+            }}
+          >
+            {this.state.journalist ? (
               <div className="bio">
                 <h2 className="subtitle is-3">Bio</h2>
                 <div className="columns">
@@ -41,13 +42,8 @@ class Profile extends Component {
                       <div className="control">
                         <textarea
                           className="textarea"
-                          value={profile.bio}
+                          value={profile.biography}
                           placeholder="Votre bio"
-                          onChange={e =>
-                            this.setState({
-                              profile: { ...profile, bio: e.target.value }
-                            })
-                          }
                         />
                       </div>
                     </div>
@@ -60,16 +56,14 @@ class Profile extends Component {
               <div className="column">
                 <div className="field">
                   <label className="label">
-                    <i class="fab fa-facebook" /> Facebook
+                    <i className="fab fa-facebook" /> Facebook
                   </label>
                   <div className="control">
                     <input
                       className="input"
-                      value={profile.facebook}
+                      value={this.state.facebook || profile.facebook}
                       onChange={e =>
-                        this.setState({
-                          profile: { ...profile, facebook: e.target.value }
-                        })
+                        this.setState({ facebook: e.target.value })
                       }
                       type="text"
                     />
@@ -77,15 +71,15 @@ class Profile extends Component {
                 </div>
                 <div className="field">
                   <label className="label">
-                    <i class="fab fa-twitter" /> Twitter
+                    <i className="fab fa-twitter" /> Twitter
                   </label>
                   <div className="control">
                     <input
                       className="input"
-                      value={profile.twitter}
+                      value={this.state.twitter || profile.twitter}
                       onChange={e =>
                         this.setState({
-                          profile: { ...profile, twitter: e.target.value }
+                          twitter: e.target.value
                         })
                       }
                       type="text"
@@ -96,15 +90,15 @@ class Profile extends Component {
               <div className="column">
                 <div className="field">
                   <label className="label">
-                    <i class="fab fa-linkedin" /> LinkedIn
+                    <i className="fab fa-linkedin" /> LinkedIn
                   </label>
                   <div className="control">
                     <input
                       className="input"
-                      value={profile.linkedin}
+                      value={this.state.linkedin || profile.linkedin}
                       onChange={e =>
                         this.setState({
-                          profile: { ...profile, linkedin: e.target.value }
+                          linkedin: e.target.value
                         })
                       }
                       type="text"
@@ -121,10 +115,10 @@ class Profile extends Component {
                   <div className="control">
                     <input
                       className="input"
-                      value={profile.firstname}
+                      value={this.state.firstname || profile.firstname}
                       onChange={e =>
                         this.setState({
-                          profile: { ...profile, firstname: e.target.value }
+                          firstname: e.target.value
                         })
                       }
                       type="text"
@@ -136,13 +130,13 @@ class Profile extends Component {
                   <div className="control">
                     <input
                       className="input"
-                      value={profile.lastname}
-                      type="text"
+                      value={this.state.lastname || profile.lastname}
                       onChange={e =>
                         this.setState({
-                          profile: { ...profile, lastname: e.target.value }
+                          lastname: e.target.value
                         })
                       }
+                      type="text"
                     />
                   </div>
                 </div>
@@ -152,10 +146,10 @@ class Profile extends Component {
                     <input
                       className="input"
                       type="email"
-                      value={profile.email}
+                      value={this.state.email || profile.email}
                       onChange={e =>
                         this.setState({
-                          profile: { ...profile, email: e.target.value }
+                          email: e.target.value
                         })
                       }
                     />
@@ -167,10 +161,10 @@ class Profile extends Component {
                     <input
                       className="input"
                       type="number"
-                      value={profile.age}
+                      value={this.state.age || profile.age}
                       onChange={e =>
                         this.setState({
-                          profile: { ...profile, age: e.target.value }
+                          age: e.target.value
                         })
                       }
                     />
@@ -183,10 +177,10 @@ class Profile extends Component {
                   <div className="control">
                     <input
                       className="input"
-                      value={profile.address}
+                      value={this.state.address || profile.address}
                       onChange={e =>
                         this.setState({
-                          profile: { ...profile, address: e.target.value }
+                          address: e.target.value
                         })
                       }
                       type="text"
@@ -198,13 +192,13 @@ class Profile extends Component {
                   <div className="control">
                     <input
                       className="input"
-                      value={profile.cp}
-                      type="text"
+                      value={this.state.postalCode || profile.postalCode}
                       onChange={e =>
                         this.setState({
-                          profile: { ...profile, cp: e.target.value }
+                          postalCode: e.target.value
                         })
                       }
+                      type="text"
                     />
                   </div>
                 </div>
@@ -214,25 +208,22 @@ class Profile extends Component {
                     <input
                       className="input"
                       type="text"
-                      value={profile.city}
+                      value={this.state.city || profile.city}
                       onChange={e =>
                         this.setState({
-                          profile: { ...profile, city: e.target.value }
+                          city: e.target.value
                         })
                       }
                     />
                   </div>
                 </div>
-                <div className="field">
-                  <div className="has-text-right">
-                    <button
-                      className="button is-primary is-large"
-                      type="submit"
-                    >
-                      Sauvegarder
-                    </button>
-                  </div>
-                </div>
+              </div>
+            </div>
+            <div className="field">
+              <div className="has-text-centered">
+                <button className="button is-primary is-large" type="submit">
+                  Sauvegarder
+                </button>
               </div>
             </div>
           </form>
@@ -242,4 +233,4 @@ class Profile extends Component {
   }
 }
 
-export default Profile;
+export default compose(graphql(GET_PROFILE), graphql(UPDATE_PROFILE))(Profile);
