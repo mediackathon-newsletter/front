@@ -13,6 +13,9 @@ import Signup from './Signup';
 import Subscriptions from './Subscriptions';
 import Profile from './Profile';
 
+// Dashboard
+import Dashboard from './dashboard/Dashboard';
+
 // GraphQL
 import requireAuthentication from './requireAuthentication';
 
@@ -22,6 +25,7 @@ const App = () => {
       <Router>
         <div className="routes">
           <Navigation />
+          <Route path="/dashboard" component={Dashboard} />
           <Route exact path="/" component={Home} />
           <Route exact path="/idea" component={requireAuthentication(Idea)} />
           <Route
