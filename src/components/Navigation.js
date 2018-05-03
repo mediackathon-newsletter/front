@@ -19,7 +19,7 @@ class Navigation extends Component {
   render() {
     return (
       <Query query={GET_USER} fetchPolicy="network-only">
-        {({ client, loading, data: { user }, refetch }) => {
+        {({ loading, error, data: { user }, refetch }) => {
           return (
             <nav
               className="navigation navbar is-white has-background-light is-fixed-top"

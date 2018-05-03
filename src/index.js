@@ -14,9 +14,9 @@ import App from './components/App';
 const GRAPHQL_URI = 'http://localhost:4000/graphql';
 
 const client = new ApolloClient({
-  fetchOptions: {
+  /*fetchOptions: {
     credentials: 'include'
-  },
+  },*/
   cache: new InMemoryCache(),
   dataIdFromObject: o => o.id,
   uri: 'http://localhost:4000/graphql',
