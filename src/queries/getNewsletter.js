@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-
+// newsletter
 export default gql`
   query newsletter($id: ID!) {
     newsletter(id: $id) {
