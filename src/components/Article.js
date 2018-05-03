@@ -16,12 +16,16 @@ class Article extends Component {
           <div className="column is-four-fifths">
             <h4 className="subtitle is-4 ">
               {article.title}{' '}
-              <span class="tag is-rounded is-success">
-                {article.category.name}
-              </span>{' '}
-              <span class="tag is-rounded is-info">
-                {article.district.name}
-              </span>
+              {article.category ? (
+                <span class="tag is-rounded is-success">
+                  {article.category.name}
+                </span>
+              ) : null}
+              {article.district ? (
+                <span class="tag is-rounded is-info">
+                  {article.district.name}
+                </span>
+              ) : null}
             </h4>
           </div>
           <div className="column" />

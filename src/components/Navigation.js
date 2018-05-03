@@ -20,6 +20,9 @@ class Navigation extends Component {
     return (
       <Query query={GET_USER} fetchPolicy="network-only">
         {({ loading, error, data: { user }, refetch }) => {
+          if (loading) return null;
+
+          if (error) return null;
           return (
             <nav
               className="navigation navbar is-white has-background-light is-fixed-top"

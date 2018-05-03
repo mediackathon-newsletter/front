@@ -1,10 +1,12 @@
 import React from 'react';
+import { graphql } from 'react-apollo';
 import { Link } from 'react-router-dom';
-import { getUser } from '../helpers/Auth';
+
+import GET_USER from '../queries/getUser';
 
 import './Home.css';
 
-const Home = () => {
+const Home = ({ data: { user } }) => {
   return (
     <div className="home">
       <section className="hero is-white has-background-light">
@@ -21,7 +23,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-      {!getUser() ? (
+      {user ? null : (
         <section className="hero is-white has-background-light">
           <div className="hero-body">
             <div className="container">
@@ -41,7 +43,7 @@ const Home = () => {
             </div>
           </div>
         </section>
-      ) : null}
+      )}
 
       <section className="hero is-white has-background-light">
         <div className="hero-body">
@@ -60,4 +62,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default graphql(GET_USER)(Home);
