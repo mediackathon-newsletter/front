@@ -2,20 +2,24 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 import Articles from './Articles';
+import Categories from './Categories';
 import Cities from './Cities';
+import City from './City';
 import Newsletters from './Newsletters';
 
-const DashboardLink = ({ children, to, exact }) => {
-  const match = window.location.pathname === to;
-
-  return (
-    <li className={match ? 'is-active' : ''}>
-      <Link className="subtitle is-4" to={to}>
-        {children}
-      </Link>
-    </li>
-  );
-};
+const DashboardLink = ({ children, to, exact }) => (
+  <Route
+    path={to}
+    exact={exact}
+    children={({ match }) => (
+      <li className={match ? 'is-active' : ''}>
+        <Link className="subtitle is-4" to={to}>
+          {children}
+        </Link>
+      </li>
+    )}
+  />
+);
 
 const Dashboard = ({ match }) => {
   return (
@@ -29,17 +33,27 @@ const Dashboard = ({ match }) => {
                 <DashboardLink to={`${match.path}/articles`}>
                   Articles
                 </DashboardLink>
+                <DashboardLink to={`${match.path}/categories`}>
+                  Categories
+                </DashboardLink>
                 <DashboardLink to={`${match.path}/newsletters`}>
                   Newsletters
                 </DashboardLink>
 
-                <DashboardLink to={`${match.path}/cities`}>
+                <DashboardLink to={`${match.path}/cities`} exact={false}>
                   Villes
                 </DashboardLink>
               </ul>
             </div>
             <Route path={`${match.path}/articles`} component={Articles} />
-            <Route path={`${match.path}/cities`} component={Cities} />
+            <Route
+              exact
+              path={`${match.path}/categories`}
+              component={Categories}
+            />
+            <Route exact path={`${match.path}/cities/:id`} component={City} />
+            <Route exact path={`${match.path}/cities`} component={Cities} />
+
             <Route path={`${match.path}/newsletters`} component={Newsletters} />
           </div>
         </Router>

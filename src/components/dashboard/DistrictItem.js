@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-class CityItem extends Component {
+
+class DistrictItem extends Component {
   state = {
     showForm: false,
-    cityName: ''
+    districtName: ''
   };
 
   toggleForm() {
     if (!this.state.showForm) {
-      this.setState({ cityName: this.props.city.name });
+      this.setState({ districtName: this.props.district.name });
     }
     this.setState({ showForm: !this.state.showForm });
   }
 
   render() {
-    const { city, updateAction, deleteAction } = this.props;
+    const { district, updateAction, deleteAction } = this.props;
 
     return (
       <form onSubmit={e => e.preventDefault()} className="columns">
@@ -25,20 +26,18 @@ class CityItem extends Component {
                 <input
                   className="input"
                   type="text"
-                  value={this.state.cityName}
-                  placeholder="Nom de la ville"
+                  value={this.state.districtName}
+                  placeholder="Nom du quartier"
                   onChange={e =>
                     this.setState({
-                      cityName: e.target.value
+                      districtName: e.target.value
                     })
                   }
                 />
               </div>
             </div>
           ) : (
-            <Link to={`${this.props.match.path}/${city.id}`} className=" is-5">
-              {city.name}
-            </Link>
+            <div className=" is-5">{district.name}</div>
           )}
         </div>
         <div className="column is-narrow">
@@ -50,8 +49,8 @@ class CityItem extends Component {
                 e.preventDefault();
                 if (this.state.showForm) {
                   updateAction({
-                    id: this.props.city.id,
-                    name: this.state.cityName
+                    id: this.props.district.id,
+                    name: this.state.districtName
                   });
                 }
                 this.toggleForm();
@@ -77,7 +76,7 @@ class CityItem extends Component {
                 className="button"
                 onClick={e => {
                   e.preventDefault();
-                  deleteAction(city.id);
+                  deleteAction(district.id);
                 }}
               >
                 Supprimer
@@ -90,4 +89,4 @@ class CityItem extends Component {
   }
 }
 
-export default withRouter(CityItem);
+export default DistrictItem;

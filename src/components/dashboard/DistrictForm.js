@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CityForm = ({ createAction, toggle }) => {
+const DistrictForm = ({ createAction, toggle }) => {
   let name;
 
   return (
@@ -13,7 +13,7 @@ const CityForm = ({ createAction, toggle }) => {
         name.value = '';
       }}
     >
-      <h1 className="title is-5">Ajouter une ville</h1>
+      <h1 className="title is-5">Ajouter un quartier</h1>
       <div className="columns">
         <div className="column ">
           <div className="field has-addons">
@@ -21,7 +21,7 @@ const CityForm = ({ createAction, toggle }) => {
               <input
                 className="input"
                 type="text"
-                placeholder="Nom de la ville"
+                placeholder="Nom du quartier"
                 ref={node => {
                   name = node;
                 }}
@@ -48,4 +48,4 @@ const CityForm = ({ createAction, toggle }) => {
   );
 };
 
-export default CityForm;
+export default DistrictForm;
