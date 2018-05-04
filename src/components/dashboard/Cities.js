@@ -5,6 +5,7 @@ import CityItem from './CityItem';
 import CityForm from './CityForm';
 import GET_CITIES from '../../queries/getCities';
 import CREATE_CITY from '../../mutations/createCity';
+import DELETE_CITY from '../../mutations/deleteCity';
 
 class Cities extends Component {
   state = {
@@ -16,7 +17,7 @@ class Cities extends Component {
   }
 
   createCity(city) {
-    this.props.createCity({ variables: { name: city.name } });
+    this.props.createCity({ variables: { ...city } });
   }
 
   updateCity(id) {
@@ -24,7 +25,7 @@ class Cities extends Component {
   }
 
   deleteCity(id) {
-    console.log(id);
+    this.props.deleteCity({ variables: { id } });
   }
 
   render() {
@@ -57,7 +58,7 @@ class Cities extends Component {
             key={city.id}
             city={city}
             updateAction={this.updateCity}
-            deleteAction={this.deleteCity}
+            deleteAction={this.deleteCity.bind(this)}
           />
         ))}
         {!this.state.showForm ? (
@@ -81,6 +82,7 @@ export default compose(
   graphql(GET_CITIES),
   graphql(CREATE_CITY, {
     name: 'createCity',
-    options: { refetchQueries: [GET_CITIES] }
-  })
+    options: { refetchQueries: [{ query: GET_CITIES }] }
+  }),
+  graphql(DELETE_CITY, { name: 'deleteCity' })
 )(Cities);
