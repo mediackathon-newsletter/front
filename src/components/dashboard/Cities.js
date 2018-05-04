@@ -84,5 +84,8 @@ export default compose(
     name: 'createCity',
     options: { refetchQueries: [{ query: GET_CITIES }] }
   }),
-  graphql(DELETE_CITY, { name: 'deleteCity' })
+  graphql(DELETE_CITY, {
+    name: 'deleteCity',
+    options: { refetchQueries: [{ query: GET_CITIES }] }
+  })
 )(Cities);
