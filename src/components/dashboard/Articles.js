@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { compose, graphql } from 'react-apollo';
 import GET_ARTICLES from '../../queries/getArticles';
+import GET_CITIES from '../../queries/getCities';
 import CREATE_ARTICLE from '../../mutations/createArticle';
 import UPDATE_ARTICLE from '../../mutations/updateArticle';
 import DELETE_ARTICLE from '../../mutations/deleteArticle';
 
 class Articles extends Component {
   render() {
-    const { data: { loading, error, articles } } = this.props;
+    console.log(this.props);
+
+    const { data: { loading, error, articles } } = this.props.getCities;
 
     if (loading) {
       return (
@@ -34,7 +37,9 @@ class Articles extends Component {
 }
 
 export default compose(
-  graphql(GET_ARTICLES),
+  graphql(GET_CITIES, {
+    name: 'getCities'
+  }),
   graphql(CREATE_ARTICLE, {
     name: 'createArticle',
     options: { refetchQueries: [{ query: GET_ARTICLES }] }
