@@ -16,6 +16,14 @@ export default gql`
         subtitle
         text
       }
+      type
+      events {
+        id
+      }
+      city {
+        id
+        name
+      }
       journalist {
         firstname
         lastname

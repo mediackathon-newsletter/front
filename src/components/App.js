@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import moment from 'moment/min/moment-with-locales';
 
 import './App.css';
 
@@ -18,6 +19,8 @@ import Dashboard from './dashboard/Dashboard';
 
 // GraphQL
 import requireAuthentication from './requireAuthentication';
+
+moment.locale('fr');
 
 const App = () => {
   return (

@@ -10,6 +10,7 @@ $primary: $grey-dark;
 $info: $grey-light;
 $success: hsl(6, 78%, 66%);
 @import '../../node_modules/bulma/bulma.sass';
+@import '../../node_modules/bulma-calendar/dist/bulma-calendar.sass';
 
 html {
   background: url('../assets/bg_full.jpg') top right no-repeat;
