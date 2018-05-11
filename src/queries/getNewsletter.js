@@ -4,18 +4,6 @@ export default gql`
   query newsletter($id: ID!) {
     newsletter(id: $id) {
       id
-      articles {
-        id
-        category {
-          name
-        }
-        district {
-          name
-        }
-        title
-        subtitle
-        text
-      }
       type
       events {
         id

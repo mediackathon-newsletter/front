@@ -8,15 +8,14 @@ import { ApolloProvider } from 'react-apollo';
 import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
+import { resolvers } from './resolvers';
+
 // Components
 import App from './components/App';
 
 const GRAPHQL_URI = 'http://localhost:4000/graphql';
 
 const client = new ApolloClient({
-  /*fetchOptions: {
-    credentials: 'include'
-  },*/
   cache: new InMemoryCache(),
   dataIdFromObject: o => o.id,
   uri: 'http://localhost:4000/graphql',
@@ -26,6 +25,12 @@ const client = new ApolloClient({
         credentials: 'include'
       }
     });
+  },
+  clientState: {
+    defaults: {
+      editing: false
+    },
+    resolvers
   }
 });
 

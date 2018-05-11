@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
-import ArticleForm from './ArticleForm';
-import EventForm from './EventForm';
+import { Link } from 'react-router-dom';
 import NewsletterTitle from './NewsletterTitle';
+import NewsletterArticles from './NewsletterArticles';
+import NewsletterEvents from './NewsletterEvents';
 import GET_NEWSLETTER from '../../queries/getNewsletter';
 
 class Newsletter extends Component {
@@ -23,14 +24,19 @@ class Newsletter extends Component {
           return (
             <div>
               <h1 className="title is-4">
-                {newsletter.city.name} <i className="fas fa-chevron-right" />
+                <Link
+                  to={`/dashboard/cities/${newsletter.city.id}/newsletters`}
+                >
+                  {newsletter.city.name}
+                </Link>{' '}
+                <i className="fas fa-chevron-right" />
                 <NewsletterTitle newsletter={newsletter} />
               </h1>
               {newsletter.type !== 'ARTICLES' ? null : (
-                <ArticleForm newsletter={newsletter} />
+                <NewsletterArticles newsletter={newsletter} />
               )}
               {newsletter.type !== 'EVENTS' ? null : (
-                <EventForm newsletter={newsletter} />
+                <NewsletterEvents newsletter={newsletter} />
               )}
             </div>
           );

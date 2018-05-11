@@ -1,9 +1,13 @@
 import gql from 'graphql-tag';
 
 export default gql`
-  query articles($newsletter: ID!) {
-    articles(newsletter: $newsletter) {
+  query events($newsletter: ID!) {
+    events(newsletter: $newsletter) {
       id
+      title
+      subtitle
+      text
+      date
       category {
         id
         name
@@ -12,9 +16,6 @@ export default gql`
         id
         name
       }
-      title
-      subtitle
-      text
       editing @client
     }
   }
